@@ -1,0 +1,189 @@
+definitions:
+  Models.Fileupload:
+    properties:
+      createTime:
+        type: string
+      filename:
+        type: string
+      filepath:
+        type: string
+      id:
+        type: integer
+    type: object
+  Models.User:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  Models.UserLogin:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  Models.UserLoginRes:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+  Models.UserRegister:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+info:
+  contact:
+    email: support@agilerap.com
+    name: API Support
+    url: http://agilerap.com
+  license:
+    name: Agilerap
+    url: http://agilerap.com/
+  title: Go Hello Api
+  version: "1.0"
+paths:
+  /auth-api/login:
+    post:
+      consumes:
+      - application/json
+      description: Login User
+      operationId: LoginUser
+      parameters:
+      - description: Login
+        in: body
+        name: EnterDetails
+        required: true
+        schema:
+          $ref: '#/definitions/Models.UserLogin'
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/Models.UserLoginRes'
+        "400":
+          description: Error
+          schema:
+            type: string
+      summary: Login User
+      tags:
+      - User
+  /auth-api/register:
+    post:
+      consumes:
+      - application/json
+      description: Register New User
+      operationId: RegisterUser
+      parameters:
+      - description: Register
+        in: body
+        name: EnterDetails
+        required: true
+        schema:
+          $ref: '#/definitions/Models.UserRegister'
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/Models.User'
+        "400":
+          description: Error
+          schema:
+            type: string
+      summary: Register User
+      tags:
+      - User
+  /upload-api/getUploadLists:
+    get:
+      description: Get File Detail
+      operationId: GetFileDetail
+      responses:
+        "200":
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/Models.Fileupload'
+            type: array
+        "400":
+          description: Error
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get File Detail
+      tags:
+      - Files
+  /user-api/user:
+    get:
+      description: Get All User Data
+      operationId: GetAllUserData
+      responses:
+        "200":
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/Models.User'
+            type: array
+        "400":
+          description: Error
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get All User Data
+      tags:
+      - User Data
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
